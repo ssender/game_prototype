@@ -15,14 +15,14 @@ function player.update(self, _dir, _map)
     if self.moving then
         local dx = (32*(self.x - 1) - self.ax)
         local dy = (32*(self.y - 1) - self.ay)
-        if dx ~= 0 then self.ax = self.ax + (dx/math.abs(dx)) 
-        elseif dy ~= 0 then self.ay = self.ay + (dy/math.abs(dy))
+        if dx ~= 0 then self.ax = self.ax + 2*(dx/math.abs(dx)) 
+        elseif dy ~= 0 then self.ay = self.ay + 2*(dy/math.abs(dy))
         else self.moving = false end
 
         if self.anim_frame == 0 then
             self.anim_sprite = self.anim_sprite + 1
             if self.anim_sprite == 5 then self.anim_sprite = 1 end
-            self.anim_frame = 24
+            self.anim_frame = 12
         end
 
         self.anim_frame = self.anim_frame - 1

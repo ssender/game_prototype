@@ -17,10 +17,10 @@ end
 
 function Tile.update(self)
     if self.xo ~= 0 then
-        if self.xo > 0 then self.xo = self.xo - 1 else self.xo = self.xo + 1 end
+        if self.xo > 0 then self.xo = self.xo - 2 else self.xo = self.xo + 2 end
     end
     if self.yo ~= 0 then
-        if self.yo > 0 then self.yo = self.yo - 1 else self.yo = self.yo + 1 end
+        if self.yo > 0 then self.yo = self.yo - 2 else self.yo = self.yo + 2 end
     end
 end
 

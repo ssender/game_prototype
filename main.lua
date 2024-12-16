@@ -3,6 +3,8 @@ Object = require "classic"
 Tile = require "tile"
 Player = require "player"
 
+local time_accumluator = 0
+
 local map = {}
 local spr = {}
 local spritesheet = love.graphics.newImage("spritesheet.png")
@@ -123,6 +125,9 @@ function love.load()
 end
 
 function love.update(dt)
+    time_accumluator = time_accumluator + dt
+    if time_accumluator < 0.01666667 then return else time_accumluator = time_accumluator - 0.01666667 end
+
     update_direction()
     you:update(move_direction, map)
     if (not you.moving) and input.a.click then push_pushable() end
