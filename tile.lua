@@ -8,7 +8,7 @@ function Tile.new(self, _id)
     self.yo = 0
     self.anim_state = 0
     self.anim_time = 0
-    self.anim_clock = 0
+    self.anim_t = 0
     self.overtile = 0
     self.is_solid = (self.id <= 64) and (self.id ~= 0)
     self.is_push = (self.id >= 33 and self.is_solid)
@@ -21,6 +21,12 @@ function Tile.update(self)
     end
     if self.yo ~= 0 then
         if self.yo > 0 then self.yo = self.yo - 2 else self.yo = self.yo + 2 end
+    end
+
+    if self.anim_t > 0 then
+        self.anim_t = self.anim_t - 1
+
+        if self.anim_t == 0 then self.img = self.id end
     end
 end
 

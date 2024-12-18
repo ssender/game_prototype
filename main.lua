@@ -2,11 +2,13 @@
 Object = require "classic"
 Tile = require "tile"
 Player = require "player"
+Ball = require "ball"
 
 local time_accumluator = 0
 
 local map = {}
 local spr = {}
+local balls = {}
 local spritesheet = love.graphics.newImage("spritesheet.png")
 
 local move_direction = 0
@@ -93,16 +95,20 @@ local function push_pushable()
         yo = -32
     end
 
-    if target_coords[1] <= 0 or target_coords[1] >= 33 or target_coords[2] <= 0 or target_coords[2] >= 24 then return end
-    if not map[push_coords[1]][push_coords[2]].is_push then return end
-    if map[target_coords[1]][target_coords[2]].is_solid then return end
+    if map[push_coords[1]][push_coords[2]].is_push then
+        if target_coords[1] <= 0 or target_coords[1] >= 33 or target_coords[2] <= 0 or target_coords[2] >= 24 then return end
+        if map[target_coords[1]][target_coords[2]].is_solid then return end
 
-    local reveal = map[push_coords[1]][push_coords[2]].overtile
-    map[push_coords[1]][push_coords[2]].overtile = map[target_coords[1]][target_coords[2]].id
-    map[target_coords[1]][target_coords[2]] = map[push_coords[1]][push_coords[2]]
-    map[target_coords[1]][target_coords[2]].xo = xo
-    map[target_coords[1]][target_coords[2]].yo = yo
-    map[push_coords[1]][push_coords[2]] = Tile(reveal)
+        local reveal = map[push_coords[1]][push_coords[2]].overtile
+        map[push_coords[1]][push_coords[2]].overtile = map[target_coords[1]][target_coords[2]].id
+        map[target_coords[1]][target_coords[2]] = map[push_coords[1]][push_coords[2]]
+        map[target_coords[1]][target_coords[2]].xo = xo
+        map[target_coords[1]][target_coords[2]].yo = yo
+        map[push_coords[1]][push_coords[2]] = Tile(reveal)
+    elseif map[push_coords[1]][push_coords[2]].id == 1 then
+        balls = {}
+        balls[1] = Ball(push_coords[1], push_coords[2], you.facing)
+    end
 end
 
 
@@ -137,6 +143,10 @@ function love.update(dt)
             map[x][y]:update()
         end
     end
+
+    for i,b in ipairs(balls) do
+        if b.active then b:update(map) end
+    end
 end
 
 function love.draw()
@@ -169,6 +179,10 @@ function love.draw()
     love.graphics.setCanvas(layers[2])
     local image_index = 124 + (you.anim_sprite) + 5*you.facing
     love.graphics.draw(spritesheet, spr[image_index], you.ax, you.ay - 2)
+
+    for i,b in ipairs(balls) do
+        if b.active then love.graphics.draw(spritesheet, spr[149], 32*b.x - 32, 32*b.y - 44) end
+    end
 
     love.graphics.setCanvas()
 

@@ -29,7 +29,6 @@ function player.update(self, _dir, _map)
     end
 
     if not self.moving then
-        
         if _dir ~= 0 then self.facing = _dir end
         
         if _dir == 1 and self.x ~= 32 then
