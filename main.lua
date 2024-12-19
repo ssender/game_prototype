@@ -1,4 +1,5 @@
 
+--#region | intializations
 Object = require "classic"
 Tile = require "tile"
 Player = require "player"
@@ -111,7 +112,7 @@ local function push_pushable()
     end
 end
 
-
+--#endregion
 
 function love.load()
     local ts = 32
@@ -181,7 +182,9 @@ function love.draw()
     love.graphics.draw(spritesheet, spr[image_index], you.ax, you.ay - 2)
 
     for i,b in ipairs(balls) do
-        if b.active then love.graphics.draw(spritesheet, spr[149], 32*b.x - 32, 32*b.y - 44) end
+        local _yo = 0
+        if b.floating then _yo = -4 end
+        if b.active then love.graphics.draw(spritesheet, spr[149], 32*b.x - 32, 32*b.y - 44 + _yo) end
     end
 
     love.graphics.setCanvas()
