@@ -145,8 +145,9 @@ function love.update(dt)
         end
     end
 
+    -- todo : change the ways that the balls are destroyed, sounds are decayed
     for i,b in ipairs(balls) do
-        if b.active then b:update(map) end
+        if b.active then b:update(map) end  
     end
 end
 

@@ -1,22 +1,21 @@
 local Ball = Object.extend(Object)
 
 function Ball.new(self, _x, _y, _f)
+    self.mark_for_cleanup = false
     self.balltype = 1
     self.sourceblockx = _x
     self.sourceblocky = _y
     self.steptime = 15 --frames/step (30 is a quarter note at 120BPM/60FPS)
     self.t = 0
     self.facing = _f
-    self.x = _x
+    self.x = _x 
     self.y = _y
     self.active = true
-    self.release = 2 --in frames
+    self.release_time = 2 --in frames
     self.max_duration = 2 --in seconds
 
     self.sounds = {}
-
     self.floating = false
-
     self.refs = {"001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015"}
 end
 
@@ -70,15 +69,13 @@ function Ball.update(self, _map)
         for i=#self.sounds,1,-1 do
             local _s = self.sounds[i]
             
-            if i >= 2 or _s:tell("seconds") >= self.max_duration then
-                _s:setVolume(_s:getVolume() - (1/self.release))
+            if i >= 2 or _s:tell("seconds") >= self.max_duration or (not self.active)then
+                _s:setVolume(_s:getVolume() - (1/self.release_time))
 
                 if _s:getVolume() <= 0 then
                     table.remove(self.sounds, i)
                     _s:release()
                 end
-            elseif self.active == false then
-                _s:setVolume(0)
             end
         end
     end
